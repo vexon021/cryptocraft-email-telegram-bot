@@ -1,3 +1,4 @@
 requests==2.32.4
 python-dotenv==1.1.1  # optional but helpful for loading .env files
+psutil==6.1.0  # for memory and cpu monitoring
 pytest==8.3.3

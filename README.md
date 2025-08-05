@@ -8,7 +8,17 @@ This bot monitors a Zoho email account and forwards new emails to a Telegram cha
 - Forwards emails to Telegram with formatted content
 - Special handling for CryptoCraft alerts with impact level indicators
 - Tracks processed emails to avoid duplicates
-- Automatic retry mechanism for error handling
+- Production-grade stability and error handling
+
+### Production Features
+- **Comprehensive logging** with log rotation (10MB max, 5 backup files)
+- **Automatic retry logic** for email and Telegram connections (up to 5 retries)
+- **Rate limit handling** for Telegram API
+- **Graceful shutdown** handling (SIGTERM/SIGINT)
+- **Health monitoring** with consecutive failure tracking
+- **Memory management** with garbage collection
+- **Connection stability** with automatic reconnection
+- **Startup/shutdown notifications** sent to Telegram
 
 ## Setup
 
@@ -42,29 +52,64 @@ This bot monitors a Zoho email account and forwards new emails to a Telegram cha
    export TG_CHAT_ID='your_telegram_chat_id'
    ```
 
-## Running Locally
+## 🏃‍♂️ Running the Bot
 
-To run the bot locally, activate your virtual environment and execute:
-
+### Option 1: Production Docker (Recommended)
 ```bash
+# Build the Docker image
+docker build -t email-bot .
+
+# Start the bot (detached mode)
+./manage_bot.sh start
+
+# Check status
+./manage_bot.sh status
+
+# View logs
+./manage_bot.sh logs
+
+# Stop the bot
+./manage_bot.sh stop
+```
+
+### Option 2: Direct Python Execution (Development)
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the bot
 python app/email_bot.py
 ```
 
-## Using Docker
+## 🛠️ Management Commands
 
-You can use Docker to run the bot in a container:
+The `manage_bot.sh` script provides easy management of the production bot:
 
-1. Build the Docker image:
+```bash
+# View all available commands
+./manage_bot.sh
 
-   ```bash
-docker build -t email-to-telegram-bot .
-   ```
+# Start the bot
+./manage_bot.sh start
 
-2. Run the Docker container:
+# Check bot status and recent logs
+./manage_bot.sh status
 
-   ```bash
-docker run --env-file .env email-to-telegram-bot
-   ```
+# Follow logs in real-time
+./manage_bot.sh logs
+
+# Check bot health and resource usage
+./manage_bot.sh health
+
+# Restart the bot
+./manage_bot.sh restart
+
+# Stop the bot
+./manage_bot.sh stop
+
+# Rebuild the Docker image
+./manage_bot.sh build
+```
 
 ## Deployment on Render
 

@@ -9,6 +9,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the application
 COPY . .
 
+# Create data and logs directories and set permissions
+RUN mkdir -p /app/data /app/data/logs && chown -R 1000:1000 /app
+
 # Expose the port (if needed for health checks)
 EXPOSE 8080
 
