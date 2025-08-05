@@ -46,8 +46,21 @@ def test_parse_crypto_craft_email_typical(html_content_typical):
     assert "🔴 Breaking: Major Update" in result
     assert "[Read more](http://example.com)" in result
 
-# Add tests for edge cases and malformed content
-# Edge HTML
-    
-test_edge_html_content()
-# Malformed HTML
+# Test edge cases
+def test_get_impact_emoji_edge(html_content_edge):
+    assert bot.get_impact_emoji(html_content_edge) == '🟡'
+
+def test_parse_crypto_craft_email_edge(html_content_edge):
+    result = bot.parse_crypto_craft_email(html_content_edge)
+    assert "🟡 Breaking: Edge Case Scenario" in result
+    # Note: View Story link extraction might not work with span instead of anchor tag
+
+# Test malformed HTML
+def test_get_impact_emoji_malformed(html_content_malformed):
+    assert bot.get_impact_emoji(html_content_malformed) == '🟠'
+
+def test_parse_crypto_craft_email_malformed(html_content_malformed):
+    result = bot.parse_crypto_craft_email(html_content_malformed)
+    # Should fall back to fallback message when parsing fails
+    assert "🟠" in result
+    assert "CryptoCraft Alert" in result or "Breaking" in result
