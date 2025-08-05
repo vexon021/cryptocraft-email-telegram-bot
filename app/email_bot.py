@@ -500,13 +500,11 @@ class EmailToTelegramBot:
                 
                 logging.info(f"Disk space: {free_space_mb:.1f}MB free ({used_percent:.1f}% used)")
                 
-                # Send warning if disk is getting full
+                # Log disk warnings but don't send to Telegram
                 if used_percent > 90:
-                    warning_msg = f"⚠️ Disk Space Warning\n\nDisk usage: {used_percent:.1f}%\nFree space: {free_space_mb:.1f}MB\n\nConsider cleaning up files."
-                    self.send_to_telegram(warning_msg)
+                    logging.warning(f"Disk space warning: {used_percent:.1f}% used, {free_space_mb:.1f}MB free")
                 elif used_percent > 95:
-                    critical_msg = f"🚨 CRITICAL: Disk Almost Full\n\nDisk usage: {used_percent:.1f}%\nFree space: {free_space_mb:.1f}MB\n\nImmediate cleanup required!"
-                    self.send_to_telegram(critical_msg)
+                    logging.error(f"CRITICAL: Disk almost full: {used_percent:.1f}% used, {free_space_mb:.1f}MB free")
                     
             except Exception as e:
                 logging.warning(f"Could not check disk space: {e}")
@@ -597,9 +595,8 @@ class EmailToTelegramBot:
                 
                 # Check if we've had too many consecutive failures
                 if self.consecutive_failures >= self.max_consecutive_failures:
-                    error_msg = f"🚨 Bot Error\n\nMax consecutive failures reached: {self.consecutive_failures}\nBot needs restart."
-                    self.send_to_telegram(error_msg)
-                    logging.error("Max consecutive failures reached. Exiting...")
+                    # Log error but don't send to Telegram
+                    logging.error(f"Max consecutive failures reached: {self.consecutive_failures}. Bot needs restart.")
                     break
                 
                 # Force garbage collection to prevent memory leaks
@@ -615,18 +612,15 @@ class EmailToTelegramBot:
                 self.consecutive_failures += 1
                 logging.error(f"Unexpected error in main loop: {traceback.format_exc()}")
                 
-                # Send error notification if it's a recurring issue
+                # Log error but don't send to Telegram
                 if self.consecutive_failures % 5 == 0:
-                    error_msg = f"🚨 Bot Warning\n\nConsecutive failures: {self.consecutive_failures}\nLast error: {str(e)[:200]}"
-                    self.send_to_telegram(error_msg)
+                    logging.error(f"Bot warning - consecutive failures: {self.consecutive_failures}, last error: {str(e)[:200]}")
                 
                 time.sleep(60)  # Wait 1 minute before retry
         
-        # Send shutdown notification
+        # Log shutdown (no Telegram notification)
         uptime = datetime.now() - self.start_time
-        shutdown_msg = f"🤖 Email Bot Stopped\n\n⏱️ Uptime: {uptime}\n📧 Emails processed: {self.total_emails_processed}\n🕐 Stopped at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
-        self.send_to_telegram(shutdown_msg)
-        logging.info("Bot shutdown complete")
+        logging.info(f"Bot shutdown complete - Uptime: {uptime}, Emails processed: {self.total_emails_processed}")
 
 def main():
     """Main function with comprehensive error handling"""
