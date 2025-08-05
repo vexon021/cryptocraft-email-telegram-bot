@@ -1,0 +1,22 @@
+services:
+  - type: worker
+    name: telegram-news-bot
+    env: docker
+    plan: free    # or standard, up to user
+    dockerfilePath: ./Dockerfile
+    autoDeploy: true
+    envVars:
+      - key: ZOHO_USER
+        sync: false
+      - key: ZOHO_PASS
+        sync: false
+      - key: TG_TOKEN
+        sync: false
+      - key: TG_CHAT_ID
+        sync: false
+    # Optional: Mount a small Render Disk (~1 GB) at /data so last_check.json survives restarts
+    # Uncomment the lines below if you want persistent storage:
+    # disk:
+    #   name: telegram-news-bot-data
+    #   mountPath: /data
+    #   sizeGB: 1

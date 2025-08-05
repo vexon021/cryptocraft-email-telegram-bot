@@ -1,0 +1,3 @@
+requests==2.32.4
+python-dotenv==1.1.1  # optional but helpful for loading .env files
+pytest==8.3.3
