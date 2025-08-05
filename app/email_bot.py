@@ -569,9 +569,8 @@ class EmailToTelegramBot:
         logging.info(f"Check interval: {self.check_interval} seconds")
         logging.info("====================================")
         
-        # Send startup notification to Telegram
-        startup_msg = f"🤖 Email Bot Started\n\n📧 Monitoring: {self.email_user}\n⏱️ Check interval: {self.check_interval}s\n🕐 Started at: {self.start_time.strftime('%Y-%m-%d %H:%M:%S')}"
-        self.send_to_telegram(startup_msg)
+        # Startup notification is logged to console only (no Telegram notification)
+        logging.info(f"Bot monitoring {self.email_user} with {self.check_interval}s check interval")
         
         health_check_counter = 0
         cleanup_counter = 0
