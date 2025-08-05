@@ -297,9 +297,9 @@ class EmailToTelegramBot:
             # Extract View Story link
             view_story_link = ""
             link_patterns = [
-                r'<a[^>]*href=["\'](https://[^"\']*)["\'][^>]*>[\s\S]*?View Story',
-                r'href=["\'](https://[^"\']*)["\'][^>]*>[\s\S]*?View Story',
-                r'View Story[^h]*href=["\'](https://[^"\']*)["\']',
+                r'<a[^>]*href=["\'](https?://[^"\']*)["\'][^>]*>[\s\S]*?View Story',
+                r'href=["\'](https?://[^"\']*)["\'][^>]*>[\s\S]*?View Story',
+                r'View Story[^h]*href=["\'](https?://[^"\']*)["\']',
             ]
             
             for pattern in link_patterns:

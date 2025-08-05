@@ -44,6 +44,7 @@ def test_get_impact_emoji_typical(html_content_typical):
 def test_parse_crypto_craft_email_typical(html_content_typical):
     result = bot.parse_crypto_craft_email(html_content_typical)
     assert "🔴 Breaking: Major Update" in result
+    # Link should now be extracted correctly
     assert "[Read more](http://example.com)" in result
 
 # Test edge cases
