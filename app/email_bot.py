@@ -538,11 +538,9 @@ class EmailToTelegramBot:
         logging.info(f"CPU usage: {cpu_percent:.1f}%")
         logging.info(f"===================")
         
-        # Send health report to Telegram every hour
-        if hasattr(self, 'last_health_report'):
-            if datetime.now() - self.last_health_report > timedelta(hours=1):
-                self.send_health_report_to_telegram(uptime, memory_mb, cpu_percent)
-        else:
+        # Health reports are kept in console logs only (no Telegram notifications)
+        # Periodic health reports to Telegram are disabled to reduce chat noise
+        if not hasattr(self, 'last_health_report'):
             self.last_health_report = datetime.now()
     
     def send_health_report_to_telegram(self, uptime, memory_mb, cpu_percent):
